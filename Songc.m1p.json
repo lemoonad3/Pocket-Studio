@@ -1,0 +1,481 @@
+{
+ "app": "m1-pocket",
+ "version": 1,
+ "id": "smud473pt",
+ "name": "Songc",
+ "bpm": 120,
+ "bars": 1,
+ "master": 1,
+ "tracks": {
+  "synth": {
+   "type": "poly-synth",
+   "notes": [
+    {
+     "note": 55,
+     "start": 1,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 59,
+     "start": 1,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 74,
+     "start": 1,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 78,
+     "start": 1,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 60,
+     "start": 3.5,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 64,
+     "start": 3.5,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 83,
+     "start": 3.5,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 67,
+     "start": 0.25,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 79,
+     "start": 0.5,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 71,
+     "start": 0.75,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 83,
+     "start": 1,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 79,
+     "start": 1.25,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 86,
+     "start": 1.5,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 67,
+     "start": 2.5,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 79,
+     "start": 3,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 71,
+     "start": 3.25,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 79,
+     "start": 3.5,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 83,
+     "start": 3.75,
+     "dur": 0.25,
+     "vel": 1
+    },
+    {
+     "note": 79,
+     "start": 0,
+     "dur": 0.25,
+     "vel": 1
+    }
+   ],
+   "sound": {
+    "w1": "sine",
+    "w2": "triangle",
+    "w3": "sawtooth",
+    "t1": 0,
+    "t2": 7,
+    "t3": -17,
+    "l1": 0.07,
+    "l2": 1,
+    "l3": 0.76,
+    "cut": 8670,
+    "res": 15.5,
+    "fType": "lowpass",
+    "fSlope": "12",
+    "fKey": 0,
+    "fEnv": 0,
+    "fA": 0.006,
+    "fD": 0.5,
+    "fS": 0.3,
+    "a": 0.003,
+    "d": 0.5,
+    "s": 0.5,
+    "r": 1.5,
+    "lr": 3,
+    "lm": 0,
+    "det": 6,
+    "dtime": ".75",
+    "dmix": 0.3,
+    "dfb": 0.4,
+    "rmix": 0.3
+   },
+   "soundName": "",
+   "play": {
+    "chord": "dom7",
+    "voice": "spread",
+    "strum": 0,
+    "preset": "",
+    "key": 9,
+    "split": {
+     "on": false,
+     "left": "preset",
+     "right": "min7",
+     "at": 60
+    },
+    "arp": {
+     "mode": "stairs",
+     "rate": "16",
+     "oct": 2,
+     "box": false,
+     "fig": "2",
+     "gate": 82
+    }
+   }
+  },
+  "bass": {
+   "type": "303",
+   "notes": [
+    {
+     "note": 37,
+     "start": 1.5,
+     "dur": 2.5,
+     "vel": 1,
+     "acc": false,
+     "slide": false
+    },
+    {
+     "note": 65,
+     "start": 0,
+     "dur": 0.25,
+     "vel": 1,
+     "acc": false,
+     "slide": false
+    },
+    {
+     "note": 49,
+     "start": 3,
+     "dur": 0.25,
+     "vel": 0.85,
+     "acc": false,
+     "slide": false
+    }
+   ],
+   "sound": {
+    "bWave": "square",
+    "bTune": 1,
+    "bKey": 0.59,
+    "bCut": 0.16,
+    "bRes": 0.78,
+    "bEnv": 0,
+    "bDec": 0.885,
+    "bAcc": 0.48,
+    "bDrive": 0.51,
+    "bEcho": 0.02,
+    "bVol": 0.9
+   },
+   "octave": 1
+  },
+  "drums": {
+   "type": "808",
+   "hits": [
+    {
+     "id": "BD",
+     "start": 1,
+     "vel": 0.9
+    },
+    {
+     "id": "SD",
+     "start": 3,
+     "vel": 0.9
+    },
+    {
+     "id": "CL",
+     "start": 0,
+     "vel": 0.9
+    },
+    {
+     "id": "CL",
+     "start": 0.5,
+     "vel": 0.9
+    },
+    {
+     "id": "CL",
+     "start": 1,
+     "vel": 0.9
+    },
+    {
+     "id": "CL",
+     "start": 1.5,
+     "vel": 0.9
+    },
+    {
+     "id": "CL",
+     "start": 2.25,
+     "vel": 0.9
+    },
+    {
+     "id": "CL",
+     "start": 2.5,
+     "vel": 0.9
+    },
+    {
+     "id": "CL",
+     "start": 3.25,
+     "vel": 0.9
+    },
+    {
+     "id": "OH",
+     "start": 0,
+     "vel": 0.9
+    },
+    {
+     "id": "OH",
+     "start": 0.5,
+     "vel": 0.9
+    },
+    {
+     "id": "OH",
+     "start": 1,
+     "vel": 0.9
+    },
+    {
+     "id": "OH",
+     "start": 1.5,
+     "vel": 0.9
+    },
+    {
+     "id": "OH",
+     "start": 2,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 0.25,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 0.75,
+     "vel": 0.9
+    },
+    {
+     "id": "OH",
+     "start": 0.25,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 0,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 0.5,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 1,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 1.25,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 1.5,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 1.75,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 2,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 2.5,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 2.25,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 2.75,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 3.25,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 3,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 3.5,
+     "vel": 0.9
+    },
+    {
+     "id": "CH",
+     "start": 3.75,
+     "vel": 0.9
+    },
+    {
+     "id": "OH",
+     "start": 3,
+     "vel": 0.9
+    },
+    {
+     "id": "RS",
+     "start": 3,
+     "vel": 0.9
+    },
+    {
+     "id": "CP",
+     "start": 3,
+     "vel": 0.9
+    },
+    {
+     "id": "BD",
+     "start": 3.5,
+     "vel": 0.9
+    }
+   ],
+   "kit": {
+    "BD": {
+     "level": 1,
+     "tune": 0,
+     "decay": 1,
+     "tone": 0.5
+    },
+    "SD": {
+     "level": 1.5,
+     "tune": -7.1,
+     "decay": 2.76,
+     "tone": 0.12
+    },
+    "LT": {
+     "level": 1,
+     "tune": 0,
+     "decay": 1,
+     "tone": 0.5
+    },
+    "MT": {
+     "level": 1,
+     "tune": 0,
+     "decay": 1,
+     "tone": 0.5
+    },
+    "HT": {
+     "level": 1,
+     "tune": 0,
+     "decay": 1,
+     "tone": 0.5
+    },
+    "RS": {
+     "level": 1,
+     "tune": 0,
+     "decay": 1,
+     "tone": 0.5
+    },
+    "CP": {
+     "level": 1.5,
+     "tune": 7.3,
+     "decay": 2.38,
+     "tone": 0.5
+    },
+    "CB": {
+     "level": 1,
+     "tune": 0,
+     "decay": 1,
+     "tone": 0.5
+    },
+    "CH": {
+     "level": 1,
+     "tune": 0,
+     "decay": 1,
+     "tone": 0.5
+    },
+    "OH": {
+     "level": 1,
+     "tune": 0,
+     "decay": 1,
+     "tone": 0.5
+    },
+    "CY": {
+     "level": 1,
+     "tune": 0,
+     "decay": 1,
+     "tone": 0.5
+    },
+    "CL": {
+     "level": 1,
+     "tune": 0,
+     "decay": 1,
+     "tone": 0.5
+    }
+   },
+   "volume": 1
+  }
+ }
+}
