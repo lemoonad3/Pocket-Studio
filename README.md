@@ -3,7 +3,7 @@
 A single-file music studio that runs in the browser — no install, no build step, nothing to serve.
 Open `index.html` and play.
 
-**[Open it here](https://YOUR-USERNAME.github.io/pocket-studio/)** — replace `YOUR-USERNAME` once GitHub Pages is on.
+**[Open it here](https://lemoonad3.github.io/pocket-studio/)** — live once GitHub Pages is switched on for this repo.
 
 ## What's inside
 
@@ -27,6 +27,12 @@ and new instruments can be added without breaking older files.
 
 **SONG → EXPORT AUDIO** renders the song offline through the same engine you hear and saves a
 16-bit 44.1 kHz WAV — the whole mix, or one instrument on its own as a stem.
+
+## MIDI export
+
+**SONG → SAVE MIDI** writes a standard format-1 MIDI file: a tempo track plus one track per
+instrument, with the 808 on channel 10 using General MIDI drum notes. Drag it onto a track in
+Ableton, Logic, FL or anything else that reads `.mid`.
 
 ## Browser support
 

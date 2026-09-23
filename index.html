@@ -448,10 +448,10 @@ input[type=range]{width:100%;accent-color:#d9d9d9}
    <div class="control"><label>LENGTH</label><select id="wavLoops" style="width:100%"><option value="1">1× loop</option><option value="2">2× loop</option><option value="4" selected>4× loop</option><option value="8">8× loop</option><option value="16">16× loop</option></select></div>
    <div class="control"><label>TRACKS</label><select id="wavWhat" style="width:100%"><option value="all">All tracks</option><option value="synth">Synth only</option><option value="bass">303 only</option><option value="drums">808 only</option></select></div>
   </div>
-  <div class="row" style="margin-top:6px"><button id="wavRender">RENDER WAV</button></div>
+  <div class="row" style="margin-top:6px"><button id="wavRender">RENDER WAV</button><button id="midiSave">SAVE MIDI</button></div>
   <div id="wavOut" hidden>
    <audio id="wavPlayer" controls style="width:100%;margin-top:8px"></audio>
-   <div class="row" style="margin-top:6px"><button id="wavSave">SAVE WAV</button><button id="wavShare" hidden>SHARE…</button></div>
+   <div class="row" style="margin-top:6px"><button id="wavSave">SAVE FILE</button><button id="wavShare" hidden>SHARE…</button></div>
   </div>
   <label>FILE — for backup or moving to another device</label>
   <div class="row">
@@ -2021,6 +2021,79 @@ $('wavRender').onclick=async()=>{
   msg(`${name} — ${r.seconds.toFixed(1)} s, ${(r.blob.size/1048576).toFixed(1)} MB, rendered in ${((performance.now()-t0)/1000).toFixed(1)} s`+(r.peak>=.999?' (peaks at full scale)':''));
  }catch(e){ msg('Render failed: '+e.message,true); }
  btn.disabled=false; btn.textContent='RENDER WAV';
+};
+/* ---------- MIDI export ----------
+   Standard MIDI file, format 1: a tempo track plus one track per instrument.
+   The 808 lane is written on channel 10 using the General MIDI drum notes that
+   Ableton's drum racks expect, so each pad lands on the right pad. */
+const GM_DRUM={BD:36,SD:38,LT:41,MT:45,HT:48,RS:37,CP:39,CB:56,CH:42,OH:46,CY:49,CL:75};
+const TPQ=480;
+function midiBytes(loops,what){
+ const bytes=a=>a.flatMap(x=>x);
+ const vlq=n=>{ const out=[n&127]; n>>=7; while(n>0){ out.unshift((n&127)|128); n>>=7; } return out; };
+ const str=t=>[...t].map(c=>c.charCodeAt(0));
+ const chunk=(id,data)=>[...str(id),(data.length>>24)&255,(data.length>>16)&255,(data.length>>8)&255,data.length&255,...data];
+ const track=events=>{ // events: {tick, data:[...]}
+  events.sort((a,b)=>a.tick-b.tick||a.order-b.order);
+  let prev=0, out=[];
+  for(const e of events){ out.push(...vlq(Math.max(0,Math.round(e.tick-prev))),...e.data); prev=e.tick; }
+  out.push(...vlq(0),0xff,0x2f,0x00);
+  return chunk('MTrk',out);
+ };
+ const name=(t)=>({tick:0,order:-1,data:[0xff,0x03,t.length,...str(t)]});
+ const L=loopBeats(), bpm=+$('arpBpm').value||120, uspq=Math.round(60000000/bpm);
+ const tempo=track([name('Pocket Studio'),
+  {tick:0,order:0,data:[0xff,0x51,0x03,(uspq>>16)&255,(uspq>>8)&255,uspq&255]},
+  {tick:0,order:1,data:[0xff,0x58,0x04,4,2,24,8]}]);
+ const tracks=[tempo];
+ const add=(ev,tick,data,order=0)=>ev.push({tick,order,data});
+ const want=k=>what==='all'||what===k;
+ if(want('synth')&&clip.length){
+  const ev=[name('Synth')];
+  for(let lp=0;lp<loops;lp++) for(const n of clip){ if(n.start>=L)continue;
+   const t0=(lp*L+n.start)*TPQ, t1=t0+Math.max(1,n.dur*TPQ);
+   add(ev,t0,[0x90,n.note&127,Math.max(1,Math.round((n.vel??1)*110))],1);
+   add(ev,t1,[0x80,n.note&127,0],0); }
+  tracks.push(track(ev));
+ }
+ if(want('bass')&&bassClip.length){
+  const ev=[name('303 Bass')], bs=bassSorted();
+  for(let lp=0;lp<loops;lp++) bs.forEach((n,i)=>{ if(n.start>=L)return;
+   const t0=(lp*L+n.start)*TPQ;
+   // a slide is written as an overlap into the next note, which is how mono
+   // synths (and Ableton's Glide) know to slide rather than retrigger
+   const last=i+1>=bs.length, nx=last?bs[0]:bs[i+1], nxAbs=((last?lp+1:lp)*L+nx.start)*TPQ;
+   const t1=n.slide?Math.max(t0+1,nxAbs+20):t0+Math.max(1,n.dur*TPQ);
+   add(ev,t0,[0x91,n.note&127,n.acc?127:96],1);
+   add(ev,t1,[0x81,n.note&127,0],0); });
+  tracks.push(track(ev));
+ }
+ if(want('drums')&&drumClip.length){
+  const ev=[name('808 Drums')];
+  for(let lp=0;lp<loops;lp++) for(const h of drumClip){ if(h.start>=L)continue;
+   const n=GM_DRUM[h.id]; if(n==null)continue;
+   const t0=(lp*L+h.start)*TPQ;
+   add(ev,t0,[0x99,n,Math.max(1,Math.round((h.vel??1)*110))],1);
+   add(ev,t0+TPQ/8,[0x89,n,0],0); }
+  tracks.push(track(ev));
+ }
+ const head=chunk('MThd',[0,1,(tracks.length>>8)&255,tracks.length&255,(TPQ>>8)&255,TPQ&255]);
+ return new Uint8Array([...head,...tracks.flat()]);
+}
+$('midiSave').onclick=()=>{
+ const loops=+$('wavLoops').value, what=$('wavWhat').value;
+ const counts={all:clip.length+bassClip.length+drumClip.length,synth:clip.length,bass:bassClip.length,drums:drumClip.length};
+ if(!counts[what]){ msg('Nothing to export — that track is empty.',true); return; }
+ const tag=what==='all'?'':'-'+{synth:'synth',bass:'303',drums:'808'}[what];
+ const nm=fileName().replace(/\.m1p\.json$/,'')+tag+'.mid';
+ const blob=new Blob([midiBytes(loops,what)],{type:'audio/midi'});
+ if(wavBlobUrl) URL.revokeObjectURL(wavBlobUrl);
+ wavBlobUrl=URL.createObjectURL(blob); wavFile={blob,name:nm};
+ $('wavOut').hidden=false; $('wavPlayer').removeAttribute('src');
+ let canShare=false; try{ canShare=!!(navigator.canShare&&navigator.canShare({files:[new File([blob],nm,{type:'audio/midi'})]})); }catch(e){}
+ $('wavShare').hidden=!canShare;
+ try{ const a=document.createElement('a'); a.href=wavBlobUrl; a.download=nm; document.body.appendChild(a); a.click(); a.remove(); }catch(e){}
+ msg(`${nm} — ${(blob.size/1024).toFixed(1)} kB, ${loops}× loop at ${+$('arpBpm').value} bpm. Drag it onto a track in Ableton. If no download appeared, use SHARE….`);
 };
 $('wavSave').onclick=()=>{
  if(!wavFile)return;
